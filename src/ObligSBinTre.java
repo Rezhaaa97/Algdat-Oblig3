@@ -36,7 +36,29 @@ public class ObligSBinTre <T> implements Beholder<T>{
 
     @Override
     public boolean leggInn(T verdi){
-        throw new UnsupportedOperationException("Ikke kodet ennå !");
+        Objects.requireNonNull(verdi, "Ulovlig med nullverdier!");
+
+        Node<T> p = rot, q = null;               // p starter i roten
+        int cmp = 0;                             // hjelpevariabel
+
+        while (p != null)       // fortsetter til p er ute av treet
+        {
+            q = p;                                 // q er forelder til p
+            cmp = comp.compare(verdi,p.verdi);     // bruker komparatoren
+            p = cmp < 0 ? p.venstre : p.høyre;     // flytter p
+        }
+
+        // p er nå null, dvs. ute av treet, q er den siste vi passerte
+
+        p = new Node<>(verdi,q);                   // oppretter en ny node
+
+        if (q == null) rot = p;                  // p blir rotnode
+        else if (cmp < 0) q.venstre = p;         // venstre barn til q
+        else q.høyre = p;                        // høyre barn til q
+
+        endringer++;
+        antall++;                                // én verdi mer i treet
+        return true;
     }
 
     @Override
@@ -66,6 +88,7 @@ public class ObligSBinTre <T> implements Beholder<T>{
 
     public int antall(T verdi) {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
+
     }
 
     @Override
@@ -74,19 +97,106 @@ public class ObligSBinTre <T> implements Beholder<T>{
         return antall == 0;
     }
 
+
     @Override
     public void nullstill() {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
     private static <T> Node<T> nesteInorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+
+
+
+
+        if (p.høyre != null) {
+
+            p = p.høyre;
+
+
+
+
+            while (p.venstre != null) {
+
+                p = p.venstre;
+
+            }
+
+
+
+
+            return p;
+
+        }
+
+
+
+
+        while (p.forelder != null && p == p.forelder.høyre) {
+
+            p = p.forelder;
+
+        }
+
+
+
+
+        return p.forelder;
+
     }
 
+
+
+
+    // Oppgave 3
+
     @Override
+
     public String toString() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+
+        StringBuilder strBuilder = new StringBuilder("[");
+
+
+
+
+        Node<T> node = rot;
+
+
+
+
+        // Find first node inorder:
+
+        if (node != null) while (node.venstre != null) node = node.venstre;
+
+
+
+
+        while (node != null) {
+
+            strBuilder.append(node.verdi);
+
+
+
+
+            Node<T> neste = nesteInorden(node);
+
+            if (neste != null) strBuilder.append(", ");
+
+
+
+
+            node = neste;
+
+        }
+
+
+
+
+        strBuilder.append("]");
+
+        return strBuilder.toString();
+
     }
+
 
     public String omvendtString() {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
