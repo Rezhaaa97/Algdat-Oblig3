@@ -798,6 +798,7 @@ public class Oblig3Test
     }  // slutt på Oppgave 8
 
 
+
     // OPPGAVE 9 ////////////////////////////////////////////////
 
     public static int oppgave9()
